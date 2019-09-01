@@ -6,6 +6,7 @@ const getDistance = (a, b) => {
     return  Math.Math.sqrt(x_dist * x_dist + y_dist * y_dist);
 };
 
+// a - center of shape
 const createVector = (a, b) => {
     return [
         b.x - a.x,
@@ -33,4 +34,12 @@ const getAngle = ([x2, y2]) => {
     return angle;
 };
 
-const equation = (angle) => 1;
+const equation = angle => 1 - Math.sin(angle);
+
+export {
+    createVector,
+    getVectorLength,
+    equation,
+    heart,
+    getAngle,
+};

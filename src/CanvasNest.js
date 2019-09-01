@@ -5,6 +5,7 @@
 
 import { bind, clear } from 'size-sensor';
 import { requestAnimationFrame, cancelAnimationFrame, range, canvasStyle } from './utils';
+import { createVector, getVectorLength, equation, getAngle, heart } from './math'
 
 export default class CanvasNest {
 
@@ -106,7 +107,7 @@ export default class CanvasNest {
       r.xa *= r.x > width || r.x < 0 ? -1 : 1;
       r.ya *= r.y > height || r.y < 0 ? -1 : 1; // 碰到边界，反向反弹
       context.fillStyle = `rgba(${this.c.pointColor})`;
-      context.fillRect(r.x - 0.5, r.y - 0.5, 1, 1); // 绘制一个宽高为1的点
+      context.fillRect(r.x - 0.5, r.y - 0.5, 3, 3); // 绘制一个宽高为1的点
       // 从下一个点开始
       for (i = idx + 1; i < all.length; i ++) {
         e = all[i];
@@ -130,9 +131,37 @@ export default class CanvasNest {
             context.stroke()
           );
 
-          // Logic to hold point in circle around current point
-          const len = Math.sqrt(35000);
-          e === current && dist < len && dist >= (len / 1.2) && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist);
+          // // Logic to hold point in circle around current point
+          // const len = Math.sqrt(35000);
+          // e === current && dist < len && dist >= (len / 1.2) && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist);
+
+          const middle = Math.sqrt(3000);
+
+          const outer = middle * 1.5
+          const inner = middle / 1.1;
+
+          if (e === current) {
+            const vector = createVector(e, r);
+
+            const angle = (Math.abs(360 - getAngle(vector)) / 180) * Math.PI;
+            const distance = getVectorLength(vector);
+
+            const heartValue = heart(angle);
+
+            const innerDistance = heartValue * inner;
+            const middleDistance = heartValue * middle;
+            const outerDistance = heartValue * outer;
+
+            if (distance < innerDistance) {
+              r.x += 0.01 * vector[0];
+              r.y += 0.01 * vector[1];
+            }
+
+            if (distance > middleDistance && distance < outerDistance) {
+              r.x -= 0.03 * vector[0];
+              r.y -= 0.03 * vector[1];
+            }
+          }
         }
       }
     });
