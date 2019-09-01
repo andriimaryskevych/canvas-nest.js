@@ -29,7 +29,7 @@ export default class CanvasNest {
     this.current = {
       x: null, // 当前鼠标x
       y: null, // 当前鼠标y
-      max: 20000 // 圈半径的平方
+      max: Math.sqrt(20000) // 圈半径的平方
     };
     this.all = this.points.concat([this.current]);
 
@@ -44,6 +44,7 @@ export default class CanvasNest {
       this.canvas.height = this.el.clientHeight;
     });
 
+    // TODO: Fix cnavas on mouse move
     this.onmousemove = window.onmousemove;
     window.onmousemove = e => {
       this.current.x = e.clientX - this.el.offsetLeft + document.scrollingElement.scrollLeft; // 当存在横向滚动条时，x坐标再往右移动滚动条拉动的距离
@@ -65,7 +66,7 @@ export default class CanvasNest {
       y: Math.random() * this.canvas.height,
       xa: 2 * Math.random() - 1, // 随机运动返现
       ya: 2 * Math.random() - 1,
-      max: 6000 // 沾附距离
+      max: Math.sqrt(10000) // 沾附距离
     }));
   };
 
@@ -113,16 +114,24 @@ export default class CanvasNest {
         if (null !== e.x && null !== e.y) {
           x_dist = r.x - e.x; // x轴距离 l
           y_dist = r.y - e.y; // y轴距离 n
-          dist = x_dist * x_dist + y_dist * y_dist; // 总距离, m
 
-          dist < e.max && (e === current && dist >= e.max / 2 && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist), // 靠近的时候加速
+          // Distance between points
+          dist = Math.sqrt(x_dist * x_dist + y_dist * y_dist); // 总距离, m
+
+          // check if point is in neightborhood
+          dist < e.max && (
+            // if this is selected point
+            e === current &&
+              dist >= (e.max / 1.5) && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist), // 靠近的时候加速
+
             d = (e.max - dist) / e.max,
             context.beginPath(),
             context.lineWidth = d / 2,
             context.strokeStyle = `rgba(${this.c.color},${d + 0.2})`,
             context.moveTo(r.x, r.y),
             context.lineTo(e.x, e.y),
-            context.stroke());
+            context.stroke()
+          );
         }
       }
     });
