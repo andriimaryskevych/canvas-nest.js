@@ -120,10 +120,6 @@ export default class CanvasNest {
 
           // check if point is in neightborhood
           dist < e.max && (
-            // if point is compared to selected point and points ditance is in range between (e.max / 2, e.max)
-            e === current &&
-              dist >= (e.max / 2) && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist), // 靠近的时候加速
-
             // Drawing line
             d = (e.max - dist) / e.max,
             context.beginPath(),
@@ -133,6 +129,10 @@ export default class CanvasNest {
             context.lineTo(e.x, e.y),
             context.stroke()
           );
+
+          // Logic to hold point in circle around current point
+          const len = Math.sqrt(35000);
+          e === current && dist < len && dist >= (len / 1.2) && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist);
         }
       }
     });
