@@ -23,18 +23,26 @@ const getAngle = ([x2, y2]) => {
     const dot = x1 * x2 + y1 * y2;
     const det = x1 * y2 - y1 * x2;
 
-    let angle = (Math.atan2(det, dot) / Math.PI) * 180;
+    let angle = Math.atan2(det, dot);
 
     if (angle < 0) {
-        angle *= -1;
-
-        angle = 360 - angle;
+        angle = (Math.PI * 2) + angle;
     }
 
     return angle;
 };
 
 const equation = angle => 1 - Math.sin(angle);
+
+const parameterizedHeart = (t) => {
+    // x(t)
+    const x = 16 * Math.pow(Math.sin(t), 3);
+
+    // y(t)
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+
+    return { x, y };
+};
 
 export {
     createVector,

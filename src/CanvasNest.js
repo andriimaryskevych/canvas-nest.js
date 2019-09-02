@@ -143,7 +143,7 @@ export default class CanvasNest {
           if (e === current) {
             const vector = createVector(e, r);
 
-            const angle = (Math.abs(360 - getAngle(vector)) / 180) * Math.PI;
+            const angle = Math.abs((Math.PI * 2) - getAngle(vector));
             const distance = getVectorLength(vector);
 
             const heartValue = heart(angle);
