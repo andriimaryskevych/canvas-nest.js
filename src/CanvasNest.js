@@ -133,7 +133,7 @@ export default class CanvasNest {
 
           const middle = Math.sqrt(3000);
 
-          const outer = middle * 2.25;
+          const outer = middle * 2.25* 1.5;
           const inner = middle / 1.1;
 
           if (e === current) {
@@ -154,16 +154,16 @@ export default class CanvasNest {
               const heartValue = heart(angle);
 
               const innerDistance = heartValue * inner;
-              const middleDistance = (heartValue * middle) / 1.5;
+              const middleDistance = (heartValue * middle);
 
-              if (distance < innerDistance) {
+              if (distance < middleDistance) {
                 r.x += 0.01 * vector[0];
                 r.y += 0.01 * vector[1];
               }
 
               if (distance > middleDistance) {
-                r.x -= 0.03 * vector[0];
-                r.y -= 0.03 * vector[1];
+                r.x -= 0.01 * vector[0];
+                r.y -= 0.01 * vector[1];
               }
             }
           }
