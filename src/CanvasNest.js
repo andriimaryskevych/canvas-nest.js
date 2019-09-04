@@ -17,8 +17,8 @@ export default class CanvasNest {
     this.c = {
       zIndex: -1,           // z-index
       opacity: 0.5,         // opacity
-      color: '0,0,0',       // color of lines
-      pointColor: '0,0,0',  // color of points
+      color: '0,0,0,1',       // color of lines
+      pointColor: '0,0,0,1',  // color of points
       count: 99,            // count
       ...config,
     };
@@ -65,8 +65,8 @@ export default class CanvasNest {
     return range(this.c.count).map(() => ({
       x: Math.random() * this.canvas.width,
       y: Math.random() * this.canvas.height,
-      xa: 2 * Math.random() - 1, // 随机运动返现
-      ya: 2 * Math.random() - 1,
+      xa: (2 * Math.random() - 1) / 2, // 随机运动返现
+      ya: (2 * Math.random() - 1) / 2,
       max: Math.sqrt(10000) // 沾附距离
     }));
   };
@@ -107,7 +107,7 @@ export default class CanvasNest {
       r.xa *= r.x > width || r.x < 0 ? -1 : 1;
       r.ya *= r.y > height || r.y < 0 ? -1 : 1; // 碰到边界，反向反弹
       context.fillStyle = `rgba(${this.c.pointColor})`;
-      context.fillRect(r.x - 0.5, r.y - 0.5, 3, 3); // 绘制一个宽高为1的点
+      context.fillRect(r.x - 0.5, r.y - 0.5, 1, 1); // 绘制一个宽高为1的点
       // 从下一个点开始
       for (i = idx + 1; i < all.length; i ++) {
         e = all[i];
@@ -133,7 +133,7 @@ export default class CanvasNest {
 
           const middle = Math.sqrt(3000);
 
-          const outer = middle * 2.25* 1.5;
+          const outer = middle * 2.25 * 1.5;
           const inner = middle / 1.1;
 
           if (e === current) {
