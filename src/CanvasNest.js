@@ -131,35 +131,40 @@ export default class CanvasNest {
             context.stroke()
           );
 
-          // // Logic to hold point in circle around current point
-          // const len = Math.sqrt(35000);
-          // e === current && dist < len && dist >= (len / 1.2) && (r.x -= 0.03 * x_dist, r.y -= 0.03 * y_dist);
-
           const middle = Math.sqrt(3000);
 
-          const outer = middle * 1.5
+          const outer = middle * 2.25;
           const inner = middle / 1.1;
 
           if (e === current) {
-            const vector = createVector(e, r);
+            const heartCenter = {
+              x: current.x,
+              y: current.y + 70
+            };
 
-            const angle = Math.abs((Math.PI * 2) - getAngle(vector));
-            const distance = getVectorLength(vector);
+            const heartCenterVector = createVector(heartCenter, r);
+            const distanceToCenter = getVectorLength(heartCenterVector);
 
-            const heartValue = heart(angle);
+            if (distanceToCenter < outer) {
+              const vector = createVector(e, r);
 
-            const innerDistance = heartValue * inner;
-            const middleDistance = heartValue * middle;
-            const outerDistance = heartValue * outer;
+              const angle = Math.abs((Math.PI * 2) - getAngle(vector));
+              const distance = getVectorLength(vector);
 
-            if (distance < innerDistance) {
-              r.x += 0.01 * vector[0];
-              r.y += 0.01 * vector[1];
-            }
+              const heartValue = heart(angle);
 
-            if (distance > middleDistance && distance < outerDistance) {
-              r.x -= 0.03 * vector[0];
-              r.y -= 0.03 * vector[1];
+              const innerDistance = heartValue * inner;
+              const middleDistance = (heartValue * middle) / 1.5;
+
+              if (distance < innerDistance) {
+                r.x += 0.01 * vector[0];
+                r.y += 0.01 * vector[1];
+              }
+
+              if (distance > middleDistance) {
+                r.x -= 0.03 * vector[0];
+                r.y -= 0.03 * vector[1];
+              }
             }
           }
         }
