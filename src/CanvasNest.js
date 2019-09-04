@@ -162,8 +162,8 @@ export default class CanvasNest {
               }
 
               if (distance > middleDistance) {
-                r.x -= 0.01 * vector[0];
-                r.y -= 0.01 * vector[1];
+                r.x -= 0.025 * vector[0];
+                r.y -= 0.025 * vector[1];
               }
             }
           }
